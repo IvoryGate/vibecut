@@ -25,3 +25,4 @@
 |---|---|---|
 | 1 | 项目地基（规范、ADR、忽略规则） | ✅ |
 | 2 | 本地转写：faster-whisper → SRT + 词级 JSON | ✅ |
+| 3 | 本地配音：跨项目调用 english-channel 的 Kokoro | ✅ |
