@@ -101,12 +101,34 @@ def wait_for_login(page) -> bool:
     return False
 
 
-def wait_for_image(page) -> bool:
-    """等待图片生成完成；遇到风控挑战页则退避重试"""
+IMG_COUNT_JS = (
+    "[...document.querySelectorAll('img')]"
+    ".filter(i => (i.alt || '').includes('已生成图像')).length"
+)
+
+
+def count_images(page) -> int:
+    """当前对话中已生成图片的数量（用于识别「新生成的那一张」）"""
+    return page.evaluate(f"() => {IMG_COUNT_JS}")
+
+
+def wait_for_image(page, previous_count: int) -> bool:
+    """等待图片数量超过 previous_count（多图对话中必须等新增，不能只看存在）；遇到风控挑战页则退避重试"""
     for attempt in range(CHALLENGE_MAX_RETRY + 1):
         try:
-            page.locator(f'img[alt*="{IMG_ALT}"]').first.wait_for(
-                state="visible", timeout=IMAGE_WAIT_SEC * 1000
+            page.wait_for_function(
+                f"() => {IMG_COUNT_JS} > {int(previous_count)}",
+                timeout=IMAGE_WAIT_SEC * 1000,
+            )
+            # 最新一张可能还在解码，等它加载完成再返回
+            page.wait_for_function(
+                """() => {
+                    const imgs = [...document.querySelectorAll('img')]
+                        .filter(i => (i.alt || '').includes('已生成图像'));
+                    const last = imgs[imgs.length - 1];
+                    return last && last.complete && last.naturalWidth > 0;
+                }""",
+                timeout=30000,
             )
             return True
         except Exception:  # noqa: BLE001
@@ -123,11 +145,12 @@ def wait_for_image(page) -> bool:
 
 
 def extract_image(page) -> dict:
-    """页面内把 blob 图片转 base64 取出"""
+    """页面内把最新一张 blob 图片转 base64 取出（多图对话取最后一张，避免命中旧图）"""
     payload = page.evaluate(
         """async () => {
-            const img = [...document.querySelectorAll('img')]
-                .find(i => (i.alt || '').includes('已生成图像'));
+            const imgs = [...document.querySelectorAll('img')]
+                .filter(i => (i.alt || '').includes('已生成图像'));
+            const img = imgs[imgs.length - 1];
             if (!img) return JSON.stringify({error: 'image not found'});
             const blob = await (await fetch(img.src)).blob();
             const bytes = new Uint8Array(await blob.arrayBuffer());
@@ -152,11 +175,12 @@ def run_generation(page, prompt: str, out_dir: Path) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     dismiss_dialogs(page)
+    previous_count = count_images(page)   # 记录已有图数，等待「新增的那张」
     type_like_human(page, prompt)
     pause = human_pause(2.5, 6.5)          # 关键：输入→发送随机停顿
     page.get_by_role("textbox", name="询问 ChatGPT").first.press("Enter")
 
-    if not wait_for_image(page):
+    if not wait_for_image(page, previous_count):
         print("错误: 等待图片超时或风控未通过", file=sys.stderr)
         return 1
 
