@@ -4,6 +4,12 @@
     "chatcut": {
       "type": "remote",
       "url": "https://api.chatcut.io/api/external-mcp/mcp",
+      "enabled": false
+    },
+    "openchatcut": {
+      "type": "remote",
+      "url": "http://localhost:5199/api/external-mcp/mcp",
+      "oauth": false,
       "enabled": true
     }
   }
