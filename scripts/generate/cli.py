@@ -162,7 +162,9 @@ def main() -> int:
     with sync_playwright() as p:
         ctx = None
         last_error = None
-        for channel in ("msedge", "chrome", None):
+        # 优先 Playwright 自带 Chromium（与 MCP 浏览器同款，已验证可正常登录），
+        # 其次系统 Edge / Chrome
+        for channel in (None, "msedge", "chrome"):
             for sandbox in (True, False):  # 优先开沙箱，避免 --no-sandbox 不受支持横条
                 try:
                     ctx = p.chromium.launch_persistent_context(
