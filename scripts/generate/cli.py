@@ -13,6 +13,8 @@
     python scripts/generate/cli.py --prompt-file prompt.txt --out-dir workdir/generate/my-shot
 
 首次运行会打开浏览器窗口，需手动完成一次 ChatGPT 登录（之后复用 .browser-profile/）。
+登录方式用**邮箱验证码**：Google OAuth 会拦截自动化浏览器（"此浏览器或应用可能不安全"，
+Playwright 通病），Microsoft/Apple 登录同理可能受限。
 """
 
 from __future__ import annotations
@@ -159,20 +161,25 @@ def main() -> int:
     pauses: list[float] = []
     with sync_playwright() as p:
         ctx = None
+        last_error = None
         for channel in ("msedge", "chrome", None):
-            try:
-                ctx = p.chromium.launch_persistent_context(
-                    str(PROFILE_DIR),
-                    channel=channel,
-                    headless=False,
-                    locale="zh-CN",
-                    viewport={"width": 1440, "height": 900},
-                )
+            for sandbox in (True, False):  # 优先开沙箱，避免 --no-sandbox 不受支持横条
+                try:
+                    ctx = p.chromium.launch_persistent_context(
+                        str(PROFILE_DIR),
+                        channel=channel,
+                        headless=False,
+                        locale="zh-CN",
+                        viewport={"width": 1440, "height": 900},
+                        chromium_sandbox=sandbox,
+                    )
+                    break
+                except Exception as exc:  # noqa: BLE001
+                    last_error = exc
+            if ctx is not None:
                 break
-            except Exception:
-                continue
         if ctx is None:
-            print("错误: 无法启动浏览器（msedge/chrome 均不可用）", file=sys.stderr)
+            print(f"错误: 无法启动浏览器: {last_error}", file=sys.stderr)
             return 1
 
         page = ctx.pages[0] if ctx.pages else ctx.new_page()
