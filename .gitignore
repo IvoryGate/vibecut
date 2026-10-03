@@ -1,0 +1,39 @@
+# 生成物与媒体（工作流产物一律不入库）
+output/
+workdir/
+*.mp4
+*.mov
+*.mkv
+*.webm
+*.flv
+*.avi
+*.mp3
+*.wav
+*.flac
+*.aac
+*.srt
+*.ass
+
+# 模型权重与缓存
+*.gguf
+*.safetensors
+*.bin
+*.pt
+*.onnx
+models/
+.cache/
+
+# 环境与密钥
+.env
+.env.*
+!.env.example
+venv/
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+
+# 编辑器
+.DS_Store
+Thumbs.db
+*.swp
