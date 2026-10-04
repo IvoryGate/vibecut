@@ -27,3 +27,5 @@
 | 2 | 本地转写：faster-whisper → SRT + 词级 JSON | ✅ |
 | 3 | 本地配音：跨项目调用 english-channel 的 Kokoro | ✅ |
 | 4 | 画面生成：常驻 Chromium 会话 + ChatGPT 网页生图 | ✅ |
+| 5 | 剪辑台接入（ChatCut MCP）：项目/素材导入 | ✅ |
+| 6 | 本地剪辑台（OpenChatCut）：应用部署 + MCP 接入 + B-roll 导入 | ✅ |
