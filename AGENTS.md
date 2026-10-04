@@ -15,6 +15,7 @@ docs/
   research/       # 工具调研，每个环节一个文件
 scripts/          # 工作流脚本（按环节分子目录）
 tools/            # 第三方工具的安装/配置说明与胶水代码
+.agents/          # 项目级 agent skills（第三方技能库，来源见 skills-lock.json）
 ```
 
 - 生成物（视频、音频、模型权重、临时文件）**一律不入库**，见 `.gitignore`
