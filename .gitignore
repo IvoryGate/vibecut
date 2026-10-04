@@ -33,6 +33,9 @@ __pycache__/
 *.pyc
 node_modules/
 
+# 本地私有 OpenCode 配置（含本机 MCP token，严禁入库）
+.opencode/
+
 # 浏览器持久化登录态（含 Cookie，严禁入库）
 .browser-profile/
 
