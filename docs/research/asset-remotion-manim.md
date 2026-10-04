@@ -69,6 +69,18 @@
 | 长视频渲染 | 较慢（内存占用高） | 中等 |
 | 输出 | MP4（可直接进 OpenChatCut `import_media`） | MP4（同左） |
 
+## 补充：Remotion 官方 AI Skills（2026-10-04 核实）
+
+**属实且规模超预期**：
+
+- 官方文档专页：<https://www.remotion.dev/docs/ai/skills>，GitHub 仓库 `remotion-dev/skills`（4.8k star，agentskills.io 标准 = 纯 Markdown SKILL.md，任何支持 skills 的 agent 可用）
+- 官方维护 12 个 skill：`remotion-best-practices`（总纲）、`remotion-create`、`remotion-markup`、`remotion-studio`、`remotion-render`、`remotion-maps`、`remotion-captions`、`remotion-saas`、`remotion-interactivity`、`remotion-docs`（查 API 文档）、`remotion-upgrade`、`remotion-multimedia`
+- 一条命令安装：`npx skills add remotion-dev/skills`
+- **官方文档明确点名支持 OpenCode**（"Claude Code, Codex, Kimi Code and OpenCode"）
+- 生态外围：官方另设 Claude Code / Codex / Kimi Code 插件仓库；社区有 `iart-ai/motion-skills`（50 个动效包）、配音驱动讲解视频 skill（word 级配音对齐，正对知识类视频场景）
+
+**对选型的影响**：Remotion 的 AI 上手成本被官方 skills 大幅拉低，而 Manim 无官方 skills（仅社区）。**POC 改为 Remotion 先行**，Manim 缓后。
+
 ## 其他候选（一句话带过）
 
 - **Motion Canvas**（TypeScript，MIT）：介于两者之间，偏插值动画/时间线，可作 Remotion 的开源替代备选
