@@ -29,3 +29,4 @@
 | 4 | 画面生成：常驻 Chromium 会话 + ChatGPT 网页生图 | ✅ |
 | 5 | 剪辑台接入（ChatCut MCP）：项目/素材导入 | ✅ |
 | 6 | 本地剪辑台（OpenChatCut）：应用部署 + MCP 接入 + B-roll 导入 | ✅ |
+| 7 | 素材环节：Remotion 动效 skills → 3 批效果集锦（14 段）+ 贝叶斯解释片（脚本→旁白→字幕全流程），manim 公式段并线 | ✅ |
