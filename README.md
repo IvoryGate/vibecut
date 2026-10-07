@@ -30,3 +30,4 @@
 | 5 | 剪辑台接入（ChatCut MCP）：项目/素材导入 | ✅ |
 | 6 | 本地剪辑台（OpenChatCut）：应用部署 + MCP 接入 + B-roll 导入 | ✅ |
 | 7 | 素材环节：Remotion 动效 skills → 3 批效果集锦（14 段）+ 贝叶斯解释片（脚本→旁白→字幕全流程），manim 公式段并线 | ✅ |
+| 8 | 音乐环节：MusicGen stereo-small 文生 BGM + 侧链闪避配乐（人声空隙 -91dB → -26.5dB） | ✅ |
